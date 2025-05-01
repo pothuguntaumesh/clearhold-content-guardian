@@ -6,9 +6,9 @@ import FooterSection from '@/components/FooterSection';
 
 const Index = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 py-6">
         <ContentChecker />
       </main>
       <FooterSection />

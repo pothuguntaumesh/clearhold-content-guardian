@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { ClipboardCheck, ThumbsUp, ThumbsDown, Upload } from 'lucide-react';
+import { ClipboardCheck, ThumbsUp, ThumbsDown, Upload, FileUp } from 'lucide-react';
 import { toast } from 'sonner';
 
 const professionOptions = [
@@ -108,13 +108,13 @@ const ContentChecker = () => {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="space-y-8">
         <div className="space-y-4">
-          <h1 className="text-center">Content Compliance Checker</h1>
+          <h1 className="text-center font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">Content Compliance Checker</h1>
           <p className="text-center text-muted-foreground">
             Check your marketing content against regulatory guidelines for financial professionals
           </p>
         </div>
         
-        <Card className="animate-fade-in">
+        <Card className="animate-fade-in border border-border/50 shadow-md">
           <CardContent className="p-6 space-y-6">
             <div className="space-y-2">
               <label className="font-medium">Professional Type</label>
@@ -145,7 +145,7 @@ const ContentChecker = () => {
             <div className="flex flex-col sm:flex-row sm:justify-between gap-4 items-center">
               <Button 
                 onClick={checkCompliance} 
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto bg-primary hover:bg-primary/90"
                 disabled={isChecking}
               >
                 {isChecking ? (
@@ -166,9 +166,9 @@ const ContentChecker = () => {
                   accept=".pdf,.doc,.docx"
                   onChange={handleFileUpload}
                 />
-                <Button variant="outline" className="w-full sm:w-auto">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Document
+                <Button variant="outline" className="w-full sm:w-auto border-dashed border-2">
+                  <FileUp className="mr-2 h-4 w-4" />
+                  Upload Firm-Specific Document
                 </Button>
               </div>
             </div>
@@ -177,18 +177,20 @@ const ContentChecker = () => {
         
         {hasSubmitted && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-scale-in">
-            <Card>
-              <CardContent className="p-6 space-y-4">
+            <Card className="border border-border/50 shadow-md overflow-hidden">
+              <div className="bg-secondary/50 p-3">
                 <h3 className="text-xl font-semibold flex items-center">
                   <span className="text-destructive mr-2">{flaggedIssues.length}</span> 
                   Flagged Issues
                 </h3>
+              </div>
+              <CardContent className="p-6 space-y-4">
                 <Separator />
                 
                 {flaggedIssues.length > 0 ? (
                   <div className="space-y-4">
                     {flaggedIssues.map((issue) => (
-                      <div key={issue.id} className="p-3 rounded-md bg-secondary">
+                      <div key={issue.id} className="p-3 rounded-md bg-secondary/50 border border-border/50">
                         <div className="flex items-start gap-2">
                           <div className={`
                             h-3 w-3 mt-1.5 rounded-full flex-shrink-0
@@ -208,8 +210,8 @@ const ContentChecker = () => {
               </CardContent>
             </Card>
             
-            <Card>
-              <CardContent className="p-6 space-y-4">
+            <Card className="border border-border/50 shadow-md overflow-hidden">
+              <div className="bg-secondary/50 p-3">
                 <div className="flex justify-between items-center">
                   <h3 className="text-xl font-semibold">Suggested Rewrite</h3>
                   <Button size="sm" variant="ghost" onClick={handleCopyText}>
@@ -217,9 +219,11 @@ const ContentChecker = () => {
                     Copy
                   </Button>
                 </div>
+              </div>
+              <CardContent className="p-6 space-y-4">
                 <Separator />
                 
-                <div className="bg-secondary rounded-md p-4 min-h-[200px]">
+                <div className="bg-secondary/30 rounded-md p-4 min-h-[200px] border border-border/30">
                   {suggestedRewrite || (
                     <p className="text-muted-foreground text-center py-8">
                       Suggested rewrite will appear here
@@ -233,7 +237,7 @@ const ContentChecker = () => {
                       variant="outline" 
                       size="icon"
                       onClick={() => handleFeedback(true)}
-                      className="hover-scale"
+                      className="hover-scale rounded-full"
                     >
                       <ThumbsUp className="h-4 w-4 text-green-600" />
                     </Button>
@@ -241,7 +245,7 @@ const ContentChecker = () => {
                       variant="outline" 
                       size="icon"
                       onClick={() => handleFeedback(false)}
-                      className="hover-scale"
+                      className="hover-scale rounded-full"
                     >
                       <ThumbsDown className="h-4 w-4 text-red-600" />
                     </Button>
