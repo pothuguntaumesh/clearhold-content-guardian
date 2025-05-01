@@ -168,7 +168,7 @@ const ContentChecker = () => {
             <div className="space-y-2">
               <label className="font-medium">Your Content</label>
               <Textarea 
-                placeholder="Enter or paste your content here..." 
+                placeholder="e.g. 'We guarantee 10% returns — message us today!'" 
                 className="min-h-[200px]" 
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -187,7 +187,7 @@ const ContentChecker = () => {
                       <Loader className="mr-2 h-4 w-4 animate-spin" />
                       <span>Checking</span>
                     </span>
-                  ) : "Check Compliance"}
+                  ) : "Review for Compliance"}
                 </Button>
                 
                 <Button
