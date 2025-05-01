@@ -5,8 +5,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { ClipboardCheck, ThumbsUp, ThumbsDown, Upload, FileUp } from 'lucide-react';
+import { ClipboardCheck, ThumbsUp, ThumbsDown, Upload, FileUp, Loader, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { usStates } from '@/lib/us-states';
 
 const professionOptions = [
   "Registered Investment Advisor (RIA)",
@@ -24,6 +25,7 @@ interface FlaggedIssue {
 
 const ContentChecker = () => {
   const [selectedProfession, setSelectedProfession] = useState<string>("");
+  const [selectedState, setSelectedState] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [isChecking, setIsChecking] = useState<boolean>(false);
   const [flaggedIssues, setFlaggedIssues] = useState<FlaggedIssue[]>([]);
@@ -34,6 +36,11 @@ const ContentChecker = () => {
   const checkCompliance = async () => {
     if (!selectedProfession) {
       toast.error("Please select your profession type first");
+      return;
+    }
+    
+    if (!selectedState) {
+      toast.error("Please select your state");
       return;
     }
     
@@ -86,6 +93,14 @@ const ContentChecker = () => {
     }
   };
 
+  const handleClearAll = () => {
+    setContent("");
+    setSuggestedRewrite("");
+    setFlaggedIssues([]);
+    setHasSubmitted(false);
+    toast.info("Content cleared");
+  };
+
   const handleCopyText = () => {
     navigator.clipboard.writeText(suggestedRewrite);
     toast.success("Suggested text copied to clipboard");
@@ -116,20 +131,38 @@ const ContentChecker = () => {
         
         <Card className="animate-fade-in border border-border/50 shadow-md">
           <CardContent className="p-6 space-y-6">
-            <div className="space-y-2">
-              <label className="font-medium">Professional Type</label>
-              <Select value={selectedProfession} onValueChange={setSelectedProfession}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select your profession" />
-                </SelectTrigger>
-                <SelectContent>
-                  {professionOptions.map((option) => (
-                    <SelectItem key={option} value={option}>
-                      {option}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="font-medium">Professional Type</label>
+                <Select value={selectedProfession} onValueChange={setSelectedProfession}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select your profession" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {professionOptions.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="font-medium">State</label>
+                <Select value={selectedState} onValueChange={setSelectedState}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select your state" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {usStates.map((state) => (
+                      <SelectItem key={state.value} value={state.value}>
+                        {state.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             
             <div className="space-y-2">
@@ -143,20 +176,29 @@ const ContentChecker = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row sm:justify-between gap-4 items-center">
-              <Button 
-                onClick={checkCompliance} 
-                className="w-full sm:w-auto bg-primary hover:bg-primary/90"
-                disabled={isChecking}
-              >
-                {isChecking ? (
-                  <span className="flex items-center">
-                    <span className="animate-pulse mr-2">Checking</span>
-                    <span className="ml-2 h-2 w-2 rounded-full bg-primary-foreground inline-block animate-pulse"></span>
-                    <span className="ml-2 h-2 w-2 rounded-full bg-primary-foreground inline-block animate-pulse" style={{ animationDelay: "0.2s" }}></span>
-                    <span className="ml-2 h-2 w-2 rounded-full bg-primary-foreground inline-block animate-pulse" style={{ animationDelay: "0.4s" }}></span>
-                  </span>
-                ) : "Check Compliance"}
-              </Button>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <Button 
+                  onClick={checkCompliance} 
+                  className="w-full sm:w-auto bg-primary hover:bg-primary/90"
+                  disabled={isChecking}
+                >
+                  {isChecking ? (
+                    <span className="flex items-center">
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                      <span>Checking</span>
+                    </span>
+                  ) : "Check Compliance"}
+                </Button>
+                
+                <Button
+                  onClick={handleClearAll}
+                  variant="outline"
+                  className="w-full sm:w-auto"
+                >
+                  <X className="mr-2 h-4 w-4" />
+                  Clear All
+                </Button>
+              </div>
               
               <div className="relative w-full sm:w-auto">
                 <input
@@ -174,6 +216,21 @@ const ContentChecker = () => {
             </div>
           </CardContent>
         </Card>
+        
+        {isChecking && (
+          <div className="text-center py-12 animate-fade-in">
+            <div className="inline-flex flex-col items-center space-y-4">
+              <div className="relative">
+                <div className="h-16 w-16 rounded-full border-4 border-primary/30 border-t-primary animate-spin"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-xs font-medium text-primary">{Math.floor(Math.random() * 100)}%</span>
+                </div>
+              </div>
+              <p className="text-muted-foreground text-sm">Analyzing content for compliance issues...</p>
+              <p className="text-xs text-muted-foreground max-w-md">Checking against regulatory guidelines specific to {selectedProfession} in {selectedState}</p>
+            </div>
+          </div>
+        )}
         
         {hasSubmitted && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-scale-in">
