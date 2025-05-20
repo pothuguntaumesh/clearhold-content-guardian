@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Shield, BookOpen, CheckCircle, PlayCircle } from 'lucide-react';
+import { ChevronRight, Shield, BookOpen, CheckCircle, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
@@ -101,7 +100,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Video Demo Section */}
+      {/* Video Demo Section - IMPROVED */}
       <section className="py-20 px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
@@ -111,26 +110,51 @@ const LandingPage = () => {
             </p>
           </div>
           
-          <div className="rounded-xl overflow-hidden border shadow-lg max-w-4xl mx-auto">
-            <AspectRatio ratio={16 / 9} className="bg-black relative group cursor-pointer">
+          <div className="rounded-xl overflow-hidden border shadow-lg max-w-4xl mx-auto bg-gradient-to-br from-[#1A1F2C] to-[#403E43]">
+            <AspectRatio ratio={16 / 9} className="relative group cursor-pointer">
+              {/* Professional looking code editor/dashboard image as placeholder */}
               <img 
-                src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&q=80&w=800"
+                src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&q=80&w=1600" 
                 alt="ClearHold Demo Video" 
-                className="object-cover w-full h-full opacity-80"
+                className="object-cover w-full h-full opacity-90 hover:opacity-100 transition-opacity"
               />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white/20 backdrop-blur-sm p-6 rounded-full group-hover:scale-110 transition-transform">
-                  <PlayCircle className="w-16 h-16 text-white" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30">
+                <div className="bg-white/10 backdrop-blur-md p-5 rounded-full hover:bg-white/20 transition-all group-hover:scale-110 border border-white/20">
+                  <Play className="w-16 h-16 text-white" fill="white" />
                 </div>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-                <h3 className="text-white font-semibold text-xl">Watch the Full Demo</h3>
+                <p className="text-white font-medium mt-6 text-lg tracking-wide px-4 py-2 bg-black/40 rounded-full">
+                  Watch the 30-second demo
+                </p>
               </div>
             </AspectRatio>
           </div>
           
+          <div className="grid md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
+            <div className="flex flex-col items-center p-4 text-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                <span className="text-primary font-bold">1</span>
+              </div>
+              <h3 className="font-medium mb-2">Input Your Content</h3>
+              <p className="text-sm text-muted-foreground">Paste your marketing copy or website content</p>
+            </div>
+            <div className="flex flex-col items-center p-4 text-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                <span className="text-primary font-bold">2</span>
+              </div>
+              <h3 className="font-medium mb-2">Select Your State</h3>
+              <p className="text-sm text-muted-foreground">Choose the state for regulatory compliance</p>
+            </div>
+            <div className="flex flex-col items-center p-4 text-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                <span className="text-primary font-bold">3</span>
+              </div>
+              <h3 className="font-medium mb-2">Get Results</h3>
+              <p className="text-sm text-muted-foreground">Receive instant compliance analysis</p>
+            </div>
+          </div>
+          
           <div className="text-center mt-12">
-            <Link to="/app">
+            <Link to="/#app">
               <Button size="lg" className="gap-2">
                 Try It Yourself <ChevronRight className="h-4 w-4" />
               </Button>
